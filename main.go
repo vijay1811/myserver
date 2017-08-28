@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"net/http"
+	"os"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
@@ -10,7 +11,11 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", hello)
-	http.ListenAndServe(":8000", mux)
+	http.ListenAndServe(":"+port, mux)
 }
